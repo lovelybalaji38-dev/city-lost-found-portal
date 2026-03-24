@@ -119,3 +119,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
+
+import os
+
+if os.environ.get('CREATE_SUPERUSER') == 'True':
+    from django.contrib.auth.models import User
+    if not User.objects.filter(username='balaji').exists():
+        User.objects.create_superuser('Balaji', 'lovelybalaji38@gmail.com', 'balaji@420')
