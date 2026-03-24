@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h2 class="text-success border-bottom pb-2 border-success d-inline-block">
+            Found Items Directory
+        </h2>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'add_item' 'found' %}" class="btn btn-success">
+            Add a Found Item
+        </a>
+    </div>
+</div>
+
+<!-- 🔍 SEARCH BAR -->
+<div class="row mb-4 justify-content-center">
+    <div class="col-md-6">
+
+        <form method="GET" class="d-flex">
+
+            <div class="input-group shadow-sm">
+
+                <input type="text" name="q" class="form-control" placeholder="Search by title or location..."
+                    value="{{ query|default:'' }}">
+
+                <button class="btn btn-success">
+                    🔍
+                </button>
+
+            </div>
+
+            <!-- CLEAR BUTTON -->
+            <a href="{% url 'list_items' item_status %}" class="btn btn-outline-secondary ms-2">
+                Clear
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for item in items %}
+
+    <!-- 🔥 CHANGE HERE -->
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="card h-100 position-relative border-success border-opacity-25 shadow-sm">
+
+            <span class="status-badge status-found">Found</span>
+
+            <div class="item-img-container">
+                {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid">
+                {% else %}
+                <div class="text-muted d-flex w-100 h-100 align-items-center justify-content-center bg-light">
+                    <span>No Image</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title text-success">{{ item.title }}</h5>
+
+                <p class="card-text text-muted mb-1">
+                    <small><strong>Location:</strong> {{ item.location }}</small>
+                </p>
+
+                <p class="card-text text-muted mb-3">
+                    <small><strong>Date Found:</strong> {{ item.date }}</small>
+                </p>
+
+                <p class="card-text text-truncate">{{ item.description }}</p>
+            </div>
+
+            <div class="card-footer bg-white border-top-0 pb-3">
+                <a href="{% url 'item_detail' item.id %}" class="btn btn-outline-success w-100">
+                    View Details
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-success mb-4 p-4 text-center">
+            <h4>No found items added yet.</h4>
+            <p class="mb-0">If you've found something, please report it here to help the owner.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

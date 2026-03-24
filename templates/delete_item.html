@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Delete Confirmation</h4>
+            </div>
+            <div class="card-body p-4 text-center">
+                <h3 class="text-danger mb-3">Are you sure?</h3>
+                <p class="fs-5 mb-4">You are about to delete the item <strong>"{{ item.title }}"</strong>.</p>
+                <div class="alert alert-warning">
+                    This action cannot be undone. The item will be permanently removed from the directory.
+                </div>
+
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a href="{% url 'item_detail' item.id %}"
+                            class="btn btn-outline-secondary btn-lg px-4 gap-3">Cancel</a>
+                        <button type="submit" class="btn btn-danger btn-lg px-4">Yes, Delete Item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

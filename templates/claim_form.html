@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <h3>Claim Item: {{ item.title }}</h3>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- 🔹 Description -->
+        <div class="mb-3">
+            <label class="form-label">Describe your item (Proof)</label>
+            <textarea name="message" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <!-- 🔥 Multiple Image Upload -->
+        <div class="mb-3">
+            <label class="form-label">Upload Proof Images</label>
+            <input type="file" name="images" class="form-control" multiple>
+            <small class="text-muted">You can upload multiple images</small>
+        </div>
+
+        <!-- 🔹 Submit Button -->
+        <button class="btn btn-success w-100">
+            Submit Claim
+        </button>
+
+    </form>
+</div>
+
+{% endblock %}

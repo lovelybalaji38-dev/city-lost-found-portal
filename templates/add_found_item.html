@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mt-4 shadow-sm">
+
+            <!-- HEADER -->
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Add Found Item</h4>
+            </div>
+
+            <!-- BODY -->
+            <div class="card-body p-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        {% if field.name != 'status' %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+
+                            <!-- ✅ IMPORTANT FIX -->
+                            {{ field }}
+
+                            <!-- ERROR -->
+                            {% if field.errors %}
+                            <div class="text-danger mt-1">
+                                <small>{{ field.errors|striptags }}</small>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- HIDDEN STATUS -->
+                    <input type="hidden" name="status" value="{{ status }}">
+
+                    <!-- BUTTONS -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            Submit Found Item Report
+                        </button>
+
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

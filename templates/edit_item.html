@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Edit Item</h4>
+                    <small>{{ item.title }}</small>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- TITLE -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Title</label>
+                            <input type="text" name="title" class="form-control" value="{{ item.title }}">
+                        </div>
+
+                        <!-- DESCRIPTION -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea name="description" rows="4" class="form-control">{{ item.description }}</textarea>
+                        </div>
+
+                        <!-- LOCATION -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Location</label>
+                            <input type="text" name="location" class="form-control" value="{{ item.location }}">
+                        </div>
+
+                        <!-- DATE -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Date</label>
+                            <input type="date" name="date" class="form-control" value="{{ item.date|date:'Y-m-d' }}">
+                        </div>
+
+                        <!-- STATUS -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="lost" {% if item.status == 'lost' %}selected{% endif %}>Lost</option>
+                                <option value="found" {% if item.status == 'found' %}selected{% endif %}>Found</option>
+                            </select>
+                        </div>
+
+                        <!-- CONTACT NUMBER -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Contact Number</label>
+                            {{ form.contact_number }}
+                        </div>
+
+                        <!-- IMAGE -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Change Image</label>
+                            <input type="file" name="image" class="form-control">
+                        </div>
+
+                        <!-- IMAGE PREVIEW -->
+                        {% if item.image %}
+                        <div class="mb-4 text-center">
+                            <p class="text-muted">Current Image</p>
+                            <img src="{{ item.image.url }}" class="img-fluid rounded shadow" style="max-height: 200px;">
+                        </div>
+                        {% endif %}
+
+                        <!-- BUTTONS -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'item_detail' item.id %}" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+
+                            <button type="submit" class="btn btn-primary">
+                                Save Changes
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

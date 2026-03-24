@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="pb-5 mb-5" style="min-height: 65vh;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <h2>My Dashboard</h2>
+        <div>
+            <a href="{% url 'add_item' 'lost' %}" class="btn btn-outline-danger me-2">Report Lost Item</a>
+            <a href="{% url 'add_item' 'found' %}" class="btn btn-outline-success">Add Found Item</a>
+        </div>
+    </div>
+
+    <!-- ITEMS TABLE -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">My Reported Items</h5>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+
+                        <table class="table table-hover mb-0 align-middle">
+
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Location</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in user_items %}
+                                <tr>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+
+                                            {% if item.image %}
+                                            <img src="{{ item.image.url }}" class="rounded me-3"
+                                                style="width: 50px; height: 50px; object-fit: cover;">
+                                            {% else %}
+                                            <div class="rounded me-3 bg-light d-flex justify-content-center align-items-center text-muted"
+                                                style="width: 50px; height: 50px;">
+                                                <small>No Img</small>
+                                            </div>
+                                            {% endif %}
+
+                                            <strong>{{ item.title }}</strong>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge {% if item.status == 'lost' %}bg-danger{% else %}bg-success{% endif %}">
+                                            {{ item.status|title }}
+                                        </span>
+                                    </td>
+
+                                    <td>{{ item.date }}</td>
+                                    <td>{{ item.location }}</td>
+
+                                    <td class="text-end">
+                                        <a href="{% url 'item_detail' item.id %}" class="btn btn-sm btn-info text-white">View</a>
+                                        <a href="{% url 'edit_item' item.id %}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="{% url 'delete_item' item.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+
+                                </tr>
+
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">
+                                        You haven't reported any items yet.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CLAIM REQUESTS -->
+    <hr class="my-5">
+
+    <h4>Claim Requests</h4>
+
+    <div class="row">
+        {% for claim in claims %}
+
+        <div class="col-md-3 mb-4">
+            <div class="card p-3 shadow-sm h-100">
+
+                <h6 class="fw-bold">{{ claim.item.title }}</h6>
+
+                <p class="mb-1">
+                    <strong>User:</strong> {{ claim.claimant.username }}
+                </p>
+
+                <p class="mb-1">
+                    <strong>Message:</strong> {{ claim.message }}
+                </p>
+
+                {% if claim.images.all %}
+                <div class="mt-2">
+                    {% for img in claim.images.all %}
+                    <a href="{{ img.image.url }}" target="_blank">
+                        <img src="{{ img.image.url }}"
+                             style="width:80px; height:80px; object-fit:cover; border-radius:8px;"
+                             class="me-2 mb-2">
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <p>
+                    <strong>Status:</strong>
+
+                    {% if claim.status == 'approved' %}
+                    <span class="badge bg-success">Approved</span>
+                    {% elif claim.status == 'rejected' %}
+                    <span class="badge bg-danger">Rejected</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    {% endif %}
+                </p>
+
+                {% if claim.status == 'pending' %}
+                <a href="{% url 'approve_claim' claim.id %}" 
+                   class="btn btn-success btn-sm w-100 mb-2" onclick="return confirm('Are you sure Approve This Item ?')">
+                   Approve
+                </a>
+
+                <a href="{% url 'decline_claim' claim.id %}" 
+                   class="btn btn-danger btn-sm w-100"  onclick="return confirm('Are you sure Decline This Item ?')">
+                   Decline
+                </a>
+                {% endif %}
+
+            </div>
+        </div>
+
+        {% empty %}
+        <p class="text-muted">No claim requests yet.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
