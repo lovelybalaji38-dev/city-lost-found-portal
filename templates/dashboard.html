@@ -58,7 +58,8 @@
                                     </td>
 
                                     <td>
-                                        <span class="badge {% if item.status == 'lost' %}bg-danger{% else %}bg-success{% endif %}">
+                                        <span
+                                            class="badge {% if item.status == 'lost' %}bg-danger{% else %}bg-success{% endif %}">
                                             {{ item.status|title }}
                                         </span>
                                     </td>
@@ -67,9 +68,11 @@
                                     <td>{{ item.location }}</td>
 
                                     <td class="text-end">
-                                        <a href="{% url 'item_detail' item.id %}" class="btn btn-sm btn-info text-white">View</a>
+                                        <a href="{% url 'item_detail' item.id %}"
+                                            class="btn btn-sm btn-info text-white">View</a>
                                         <a href="{% url 'edit_item' item.id %}" class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="{% url 'delete_item' item.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                        <a href="{% url 'delete_item' item.id %}"
+                                            class="btn btn-sm btn-danger">Delete</a>
                                     </td>
 
                                 </tr>
@@ -118,8 +121,7 @@
                     {% for img in claim.images.all %}
                     <a href="{{ img.image.url }}" target="_blank">
                         <img src="{{ img.image.url }}"
-                             style="width:80px; height:80px; object-fit:cover; border-radius:8px;"
-                             class="me-2 mb-2">
+                            style="width:80px; height:80px; object-fit:cover; border-radius:8px;" class="me-2 mb-2">
                     </a>
                     {% endfor %}
                 </div>
@@ -138,16 +140,21 @@
                 </p>
 
                 {% if claim.status == 'pending' %}
-                <a href="{% url 'approve_claim' claim.id %}" 
-                   class="btn btn-success btn-sm w-100 mb-2" onclick="return confirm('Are you sure Approve This Item ?')">
-                   Approve
+                <a href="{% url 'approve_claim' claim.id %}" class="btn btn-success btn-sm w-100 mb-2"
+                    onclick="return confirm('Are you sure Approve This Item ?')">
+                    Approve
                 </a>
 
-                <a href="{% url 'decline_claim' claim.id %}" 
-                   class="btn btn-danger btn-sm w-100"  onclick="return confirm('Are you sure Decline This Item ?')">
-                   Decline
+                <a href="{% url 'decline_claim' claim.id %}" class="btn btn-danger btn-sm w-100"
+                    onclick="return confirm('Are you sure Decline This Item ?')">
+                    Decline
                 </a>
                 {% endif %}
+
+                <a href="{% url 'delete_claim' claim.id %}" class="btn btn-sm btn-danger mt-2"
+                    onclick="return confirm('Delete this request?')">
+                    ❌ Clear
+                </a>
 
             </div>
         </div>

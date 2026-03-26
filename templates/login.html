@@ -1,28 +1,74 @@
 {% extends 'base.html' %}
 
+{% block body_class %}login-bg{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-5">
-        <div class="card mt-5 p-4">
-            <h2 class="text-center mb-4">Login</h2>
+
+        <!-- 🔥 GLASS LOGIN CARD -->
+        <div class="mt-5 glass-form">
+
+            <h2 class="text-center form-title">Login</h2>
+
             <form method="post">
                 {% csrf_token %}
+
                 <div class="mb-3">
-                    <label class="form-label">Username</label>
+                    <label class="form-label fw-bold">Username</label>
                     <input type="text" name="username" class="form-control" required autofocus>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" required>
+
+                <!-- 👁 PASSWORD WITH ICON -->
+                <div class="mb-3 position-relative">
+                    <label class="form-label fw-bold">Password</label>
+
+                    <input type="password" name="password" id="password"
+                           class="form-control pe-5" required>
+
+                    <!-- eye icon -->
+                    <i class="fa-solid fa-eye"
+                       id="togglePassword"
+                       onclick="togglePassword()"
+                       style="position:absolute; right:15px; top:38px; cursor:pointer; color:white;">
+                    </i>
                 </div>
+
                 <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Login
+                    </button>
                 </div>
             </form>
+
             <div class="text-center mt-3">
-                <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+                <p style="color:white;">
+                    Don't have an account?
+                    <a href="{% url 'register' %}" style="color:#00ffcc;">Register here</a>
+                </p>
             </div>
+
         </div>
+
     </div>
 </div>
+
+<!-- 🔥 JS -->
+<script>
+function togglePassword() {
+    const password = document.getElementById("password");
+    const icon = document.getElementById("togglePassword");
+
+    if (password.type === "password") {
+        password.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        password.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+</script>
+
 {% endblock %}

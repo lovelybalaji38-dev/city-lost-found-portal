@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
+{% block body_class %}register-bg{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <div class="card mt-5 p-4 shadow">
-            <h2 class="text-center mb-4">Register Account</h2>
+
+        <!-- 🔥 GLASS FORM -->
+        <div class="mt-5 glass-form">
+
+            <h2 class="text-center form-title">Register Account</h2>
 
             <form method="post">
                 {% csrf_token %}
@@ -12,7 +17,7 @@
                 <!-- First + Last Name -->
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">
+                        <label class="form-label fw-bold">
                             First Name <span style="color:red">*</span>
                         </label>
                         {{ form.first_name }}
@@ -20,7 +25,7 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">
+                        <label class="form-label fw-bold">
                             Last Name <span style="color:red">*</span>
                         </label>
                         {{ form.last_name }}
@@ -30,7 +35,7 @@
 
                 <!-- Username -->
                 <div class="mb-3">
-                    <label class="form-label">
+                    <label class="form-label fw-bold">
                         Username <span style="color:red">*</span>
                     </label>
                     {{ form.username }}
@@ -39,7 +44,7 @@
 
                 <!-- Email -->
                 <div class="mb-3">
-                    <label class="form-label">
+                    <label class="form-label fw-bold">
                         Email <span style="color:red">*</span>
                     </label>
                     {{ form.email }}
@@ -47,33 +52,48 @@
                 </div>
 
                 <!-- Password -->
-                <div class="mb-3">
-                    <label class="form-label">
+                <div class="mb-3 position-relative">
+                    <label class="form-label fw-bold">
                         Password <span style="color:red">*</span>
                     </label>
+
                     {{ form.password1 }}
+
+                    <i class="fa-solid fa-eye"
+                       id="togglePassword1"
+                       onclick="togglePassword('id_password1','togglePassword1')"
+                       style="position:absolute; right:15px; top:38px; cursor:pointer; color:white;">
+                    </i>
+
                     <div class="text-danger small">{{ form.password1.errors }}</div>
-                    <small class="text-muted">{{ form.password1.help_text }}</small>
                 </div>
 
                 <!-- Confirm Password -->
-                <div class="mb-3">
-                    <label class="form-label">
+                <div class="mb-3 position-relative">
+                    <label class="form-label fw-bold">
                         Confirm Password <span style="color:red">*</span>
                     </label>
+
                     {{ form.password2 }}
+
+                    <i class="fa-solid fa-eye"
+                       id="togglePassword2"
+                       onclick="togglePassword('id_password2','togglePassword2')"
+                       style="position:absolute; right:15px; top:38px; cursor:pointer; color:white;">
+                    </i>
+
                     <div class="text-danger small">{{ form.password2.errors }}</div>
                 </div>
 
-                <!-- Terms & Conditions -->
+                <!-- Terms -->
                 <div class="form-check mt-3 mb-3">
                     <input class="form-check-input" type="checkbox" required id="agree" name="agree">
 
-                    <label class="form-check-label" for="agree">
+                    <label class="form-check-label" for="agree" style="color:white;">
                         I agree to the
-                        <a href="{% url 'terms' %}" target="_blank">Terms & Conditions</a>
+                        <a href="{% url 'terms' %}" target="_blank" style="color:#00ffcc;">Terms & Conditions</a>
                         and
-                        <a href="{% url 'privacy' %}" target="_blank">Privacy Policy</a>
+                        <a href="{% url 'privacy' %}" target="_blank" style="color:#00ffcc;">Privacy Policy</a>
                     </label>
                 </div>
 
@@ -86,12 +106,33 @@
             </form>
 
             <div class="text-center mt-3">
-                <p>Already have an account?
-                    <a href="{% url 'login' %}">Login here</a>
+                <p style="color:white;">
+                    Already have an account?
+                    <a href="{% url 'login' %}" style="color:#00ffcc;">Login here</a>
                 </p>
             </div>
 
         </div>
+
     </div>
 </div>
+
+<!-- 🔥 JS -->
+<script>
+function togglePassword(fieldId, iconId) {
+    const password = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+
+    if (password.type === "password") {
+        password.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        password.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+</script>
+
 {% endblock %}

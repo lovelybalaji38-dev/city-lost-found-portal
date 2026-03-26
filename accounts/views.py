@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.views.decorators.cache import never_cache
 
 
+
 @never_cache
 def register_view(request):
     if request.user.is_authenticated:
@@ -70,3 +71,5 @@ def create_admin(request):
         User.objects.create_superuser('Balaji', 'lovelybalaji38@gmail.com', 'balaji@420')
         return HttpResponse("Admin created")
     return HttpResponse("Already exists")
+
+

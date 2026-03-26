@@ -12,6 +12,9 @@ from .models import Chat
 
 from .models import Claim, ClaimImage
 
+from django.contrib.auth.decorators import login_required
+from .models import Item
+
 
 
 
@@ -197,7 +200,7 @@ def approve_claim(request, claim_id):
 
 
 
-
+@login_required
 def item_detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
 
@@ -291,3 +294,17 @@ def decline_claim(request, claim_id):
     messages.success(request, "Claim Rejected!")
     return redirect('dashboard')
 
+
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def delete_claim(request, claim_id):
+    claim = get_object_or_404(Claim, id=claim_id)
+
+    # only owner அல்லது admin மட்டும் delete பண்ணலாம்
+    if request.user == claim.item.user or request.user.is_superuser:
+        claim.delete()
+
+    return redirect('dashboard')

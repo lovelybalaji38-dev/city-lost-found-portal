@@ -1,58 +1,77 @@
 {% extends 'base.html' %}
 
+{% block body_class %}lost-bg{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card mt-4 shadow-sm">
+
+        <!-- 🔥 GLASS FORM -->
+        <div class="glass-form mt-4">
 
             <!-- HEADER -->
-            <div class="card-header bg-danger text-white">
-                <h4 class="mb-0">Report Lost Item</h4>
-            </div>
+            <h4 class="form-title mb-4">Report Lost Item</h4>
 
             <!-- BODY -->
-            <div class="card-body p-4">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
 
-                    {% for field in form %}
-                        {% if field.name != 'status' %}
+                <!-- 🔥 FIRST LOOP (image + status exclude) -->
+                {% for field in form %}
+                    {% if field.name != 'status' and field.name != 'image' %}
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">{{ field.label }}</label>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{{ field.label }}</label>
 
-                            <!-- ✅ MAIN FIX -->
-                            {{ field }}
+                        {{ field }}
 
-                            <!-- ERROR -->
-                            {% if field.errors %}
-                            <div class="text-danger mt-1">
-                                <small>{{ field.errors|striptags }}</small>
-                            </div>
-                            {% endif %}
+                        {% if field.errors %}
+                        <div class="text-danger mt-1">
+                            <small>{{ field.errors|striptags }}</small>
                         </div>
-
                         {% endif %}
-                    {% endfor %}
-
-                    <!-- HIDDEN STATUS -->
-                    <input type="hidden" name="status" value="{{ status }}">
-
-                    <!-- BUTTONS -->
-                    <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-danger btn-lg">
-                            Submit Lost Item Report
-                        </button>
-
-                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
-                            Cancel
-                        </a>
                     </div>
 
-                </form>
-            </div>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- 🔥 IMAGE FIELD (Contact number apram) -->
+                {% for field in form %}
+                    {% if field.name == 'image' %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{{ field.label }}</label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                        <div class="text-danger mt-1">
+                            <small>{{ field.errors|striptags }}</small>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% endif %}
+                {% endfor %}
+
+                <!-- HIDDEN STATUS -->
+                <input type="hidden" name="status" value="{{ status }}">
+
+                <!-- BUTTONS -->
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-danger btn-lg">
+                        Submit Lost Item Report
+                    </button>
+
+                    <a href="{% url 'home' %}" class="btn btn-outline-light">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
 
         </div>
+
     </div>
 </div>
 {% endblock %}
