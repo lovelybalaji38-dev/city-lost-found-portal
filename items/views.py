@@ -9,11 +9,11 @@ from django.db.models import Q
 from .models import Claim
 from django.contrib.auth.decorators import login_required
 from .models import Chat
+from django.contrib.auth.models import User
+from django.db.models import Count, Q
 
 from .models import Claim, ClaimImage
 
-from django.contrib.auth.decorators import login_required
-from .models import Item
 
 
 
@@ -49,9 +49,11 @@ def home(request):
 
 @login_required
 @never_cache
+
+
 def dashboard(request):
 
-    # 🔥 Admin vs User logic
+    # Existing logic
     if request.user.is_superuser:
         user_items = Item.objects.all()
         claims = Claim.objects.all()
@@ -59,9 +61,22 @@ def dashboard(request):
         user_items = Item.objects.filter(user=request.user)
         claims = Claim.objects.filter(item__user=request.user)
 
+    # 🔥 ADD THIS (Admin stats)
+    total_users = User.objects.count()
+
+    users_data = User.objects.annotate(
+        total_posts=Count('items'),
+        lost_count=Count('items', filter=Q(items__status='lost')),
+        found_count=Count('items', filter=Q(items__status='found')),
+    )
+
     context = {
         'user_items': user_items,
-        'claims': claims
+        'claims': claims,
+
+        # 👇 NEW DATA
+        'total_users': total_users,
+        'users_data': users_data,
     }
 
     return render(request, 'dashboard.html', context)
@@ -308,3 +323,27 @@ def delete_claim(request, claim_id):
         claim.delete()
 
     return redirect('dashboard')
+
+
+
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
+from django.db.models import Count, Q
+
+def is_admin(user):
+    return user.is_superuser
+
+@user_passes_test(is_admin)
+def users_overview(request):
+    users_data = User.objects.annotate(
+        total_posts=Count('items'),
+        lost_count=Count('items', filter=Q(items__status='lost')),
+        found_count=Count('items', filter=Q(items__status='found')),
+    )
+
+    total_users = User.objects.count()
+
+    return render(request, 'users_overview.html', {
+        'users_data': users_data,
+        'total_users': total_users,
+    })

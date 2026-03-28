@@ -12,6 +12,8 @@
         </div>
     </div>
 
+
+
     <!-- ITEMS TABLE -->
     <div class="row">
         <div class="col-12">
@@ -95,6 +97,52 @@
         </div>
     </div>
 
+
+
+
+
+    <br>
+    <br>
+
+    {% if request.user.is_superuser %}
+    <hr>
+
+    <div class="d-flex justify-content-center mt-4 mb-4">
+
+        <div class="row text-center" style="width: 50%;">
+
+            <!-- Total Users -->
+            <div class="col-md-6 mb-3">
+                <div class="card shadow border-0 text-white"
+                    style="background: linear-gradient(135deg, #4e73df, #224abe); border-radius:15px;  transition:0.3s; ">
+                    <div class="card-body">
+                        <h6>Total Users</h6>
+                        <h2>{{ total_users }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Users -->
+            <div class="col-md-6 mb-3">
+                <a href="{% url 'users_overview' %}" style="text-decoration:none;">
+                    <div class="card shadow border-0 text-white"
+                        style="background: linear-gradient(135deg, #1cc88a, #13855c); border-radius:15px; transition:0.3s; ">
+                        <div class="card-body">
+                            <h6>View Users</h6>
+                            <h2>→</h2>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+
     <!-- CLAIM REQUESTS -->
     <hr class="my-5">
 
@@ -165,5 +213,7 @@
     </div>
 
 </div>
+
+<hr>
 
 {% endblock %}

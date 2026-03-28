@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">Users Overview</h2>
+
+    <p>Total Users: <strong>{{ total_users }}</strong></p>
+
+    <table class="table table-hover shadow-sm mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Username</th>
+                <th>Total Posts</th>
+                <th>Lost</th>
+                <th>Found</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users_data %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td><span class="badge bg-primary">{{ user.total_posts }}</span></td>
+                <td><span class="badge bg-danger">{{ user.lost_count }}</span></td>
+                <td><span class="badge bg-success">{{ user.found_count }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+
+{% endblock %}

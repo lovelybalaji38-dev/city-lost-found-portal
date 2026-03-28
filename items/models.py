@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.models import User
+
 
 class Item(models.Model):
     STATUS_CHOICES = (
@@ -8,7 +8,7 @@ class Item(models.Model):
         ('found', 'Found'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='items')
 
     title = models.CharField(max_length=100)
     description = models.TextField()

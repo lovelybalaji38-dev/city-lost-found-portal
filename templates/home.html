@@ -82,46 +82,46 @@
 <div class="row g-4">
     {% for item in recent_items %}
     <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card h-100 shadow-sm position-relative">
+        <div class="card h-100 shadow-sm">
 
-            <span class="status-badge status-{{ item.status }}">
-                {{ item.status|title }}
-            </span>
+            <!-- 🔥 FIX START -->
+            <div class="item-img-container position-relative">
 
-            <div class="item-img-container">
                 {% if item.image %}
 
                     {% if item.status == 'lost' %}
-                        <!-- LOST → CLEAR -->
                         <img src="{{ item.image.url }}" class="img-fluid">
 
                     {% else %}
-                        <!-- FOUND ITEMS -->
 
                         {% if user.is_authenticated %}
 
-                            {% if user == item.user or user.is_superuser %}
-                                <img src="{{ item.image.url }}" class="img-fluid">
-
-                            {% elif item.id in approved_items %}
+                            {% if user == item.user or user.is_superuser or item.id in approved_items %}
                                 <img src="{{ item.image.url }}" class="img-fluid">
 
                             {% else %}
-                                <img src="{{ item.image.url }}" class="img-fluid" style="filter: blur(10px);">
+                                <img src="{{ item.image.url }}" class="img-fluid blur-img">
                             {% endif %}
 
                         {% else %}
-                            <img src="{{ item.image.url }}" class="img-fluid" style="filter: blur(10px);">
+                            <img src="{{ item.image.url }}" class="img-fluid blur-img">
                         {% endif %}
 
                     {% endif %}
+
+                    <!-- 🔥 BADGE moved inside image container -->
+                    <span class="status-badge status-{{ item.status }}">
+                        {{ item.status|title }}
+                    </span>
 
                 {% else %}
                 <div class="bg-light d-flex align-items-center justify-content-center" style="height:200px;">
                     No Image
                 </div>
                 {% endif %}
+
             </div>
+            <!-- 🔥 FIX END -->
 
             <div class="card-body">
                 <h5>{{ item.title }}</h5>
@@ -139,6 +139,8 @@
     </div>
     {% endfor %}
 </div>
+<br>
+<hr>
 
 <!-- HOW IT WORKS -->
 <div class="mt-5 pt-5">

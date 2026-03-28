@@ -44,21 +44,41 @@
 <div class="row g-4">
     {% for item in items %}
 
-    <!-- 🔥 CHANGE HERE -->
     <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 position-relative border-success border-opacity-25 shadow-sm">
 
-            <span class="status-badge status-found">Found</span>
+            <!-- 🔥 FIX START -->
+            <div class="item-img-container position-relative">
 
-            <div class="item-img-container">
                 {% if item.image %}
-                <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid">
+
+                    {% if user.is_authenticated %}
+
+                        {% if user == item.user or user.is_superuser %}
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid">
+
+                        {% elif item.id in approved_items %}
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid">
+
+                        {% else %}
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid blur-img">
+                        {% endif %}
+
+                    {% else %}
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid blur-img">
+                    {% endif %}
+
+                    <!-- 🔥 BADGE inside container -->
+                    <span class="status-badge status-found">Found</span>
+
                 {% else %}
                 <div class="text-muted d-flex w-100 h-100 align-items-center justify-content-center bg-light">
                     <span>No Image</span>
                 </div>
                 {% endif %}
+
             </div>
+            <!-- 🔥 FIX END -->
 
             <div class="card-body">
                 <h5 class="card-title text-success">{{ item.title }}</h5>

@@ -14,4 +14,5 @@ urlpatterns = [
     path('chat/<int:item_id>/', views.chat_view, name='chat'),
     path('claim/<int:claim_id>/decline/', views.decline_claim, name='decline_claim'),
     path('delete-claim/<int:claim_id>/', views.delete_claim, name='delete_claim'),
+    path('users/', views.users_overview, name='users_overview')
 ]
