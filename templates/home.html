@@ -3,15 +3,15 @@
 {% block content %}
 
 <!-- HERO SECTION -->
-<div class="hero-section text-center p-5 mb-5 rounded shadow bg-primary text-white">
-    <h1 class="display-4 fw-bold">Welcome to City Lost & Found</h1>
-    <p class="lead">Help reunite people with their lost belongings.</p>
+<div class="hero-section text-center p-5 mb-5 rounded shadow text-white">
+    <h1 class="display-4 fw-bold mb-3 neon-text" style="text-shadow: 0 4px 20px rgba(0,240,255,0.4);">Welcome to City Lost & Found</h1>
+    <p class="lead mb-4" style="color: rgba(255,255,255,0.8);">Help reunite people with their lost belongings.</p>
 
     <div class="mt-4">
-        <a href="{% url 'add_item' 'lost' %}" class="btn btn-light btn-lg text-danger me-2 shadow fw-bold">
+        <a href="{% url 'add_item' 'lost' %}" class="btn gradient-btn btn-lg me-3 px-4 shadow fw-bold">
             Report Lost Item
         </a>
-        <a href="{% url 'add_item' 'found' %}" class="btn btn-outline-light btn-lg fw-bold">
+        <a href="{% url 'add_item' 'found' %}" class="btn gradient-btn btn-lg px-4 fw-bold">
             Add Found Item
         </a>
     </div>
@@ -19,70 +19,70 @@
 
 <!-- QUICK ACTIONS -->
 <div class="row text-center mb-5">
-    <h3 class="mb-4 fw-bold">Quick Actions</h3>
+    <h3 class="mb-4 fw-bold" style="color: #fff;">Quick Actions</h3>
 
     <div class="col-md-4 mb-3">
-        <div class="card shadow-sm h-100 p-4">
-            <h5 class="fw-bold text-danger">Lost Something?</h5>
+        <div class="glass-card h-100 p-4">
+            <h5 class="fw-bold text-danger mb-3"><i class="fa-solid fa-triangle-exclamation me-2"></i>Lost Something?</h5>
             <p class="text-muted">Report your lost item quickly</p>
-            <a href="{% url 'add_item' 'lost' %}" class="btn btn-danger">Report Now</a>
+            <a href="{% url 'add_item' 'lost' %}" class="btn gradient-btn w-100">Report Now</a>
         </div>
     </div>
 
     <div class="col-md-4 mb-3">
-        <div class="card shadow-sm h-100 p-4">
-            <h5 class="fw-bold text-success">Found Something?</h5>
+        <div class="glass-card h-100 p-4">
+            <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-hands-holding-circle me-2"></i>Found Something?</h5>
             <p class="text-muted">Help others by adding found items</p>
-            <a href="{% url 'add_item' 'found' %}" class="btn btn-success">Add Item</a>
+            <a href="{% url 'add_item' 'found' %}" class="btn gradient-btn w-100">Add Item</a>
         </div>
     </div>
 
     <div class="col-md-4 mb-3">
-        <div class="card shadow-sm h-100 p-4">
-            <h5 class="fw-bold text-primary">Browse Items</h5>
+        <div class="glass-card h-100 p-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-magnifying-glass me-2"></i>Browse Items</h5>
             <p class="text-muted">Search through lost & found items</p>
-            <a href="{% url 'list_items' 'lost' %}" class="btn btn-primary">View Items</a>
+            <a href="{% url 'list_items' 'lost' %}" class="btn gradient-btn w-100">View Items</a>
         </div>
     </div>
 </div>
 
 <!-- STATS -->
 <div class="row text-center mb-5">
-    <div class="col-md-4">
-        <div class="card shadow-sm p-4">
-            <h2 class="fw-bold text-danger">{{ lost_count }}</h2>
-            <p class="text-muted mb-0">Lost Items</p>
+    <div class="col-md-4 mb-3">
+        <div class="glass-card p-4">
+            <h2 class="fw-bold text-danger mb-0" style="font-size: 2.5rem;">{{ lost_count }}</h2>
+            <p class="text-muted mb-0 mt-2 text-uppercase" style="letter-spacing: 1px; font-size: 0.85rem;">Lost Items</p>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm p-4">
-            <h2 class="fw-bold text-success">{{ found_count }}</h2>
-            <p class="text-muted mb-0">Found Items</p>
+    <div class="col-md-4 mb-3">
+        <div class="glass-card p-4">
+            <h2 class="fw-bold text-success mb-0" style="font-size: 2.5rem;">{{ found_count }}</h2>
+            <p class="text-muted mb-0 mt-2 text-uppercase" style="letter-spacing: 1px; font-size: 0.85rem;">Found Items</p>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm p-4">
-            <h2 class="fw-bold text-primary">{{ total_items }}</h2>
-            <p class="text-muted mb-0">Total Posts</p>
+    <div class="col-md-4 mb-3">
+        <div class="glass-card p-4">
+            <h2 class="fw-bold text-primary mb-0" style="font-size: 2.5rem;">{{ total_items }}</h2>
+            <p class="text-muted mb-0 mt-2 text-uppercase" style="letter-spacing: 1px; font-size: 0.85rem;">Total Posts</p>
         </div>
     </div>
 </div>
 
 <!-- RECENT ITEMS -->
-<h3 class="mb-4 d-flex justify-content-between align-items-center">
+<h3 class="mb-4 d-flex justify-content-between align-items-center" style="color: #fff;">
     Recently Posted Items
     <div>
-        <a href="{% url 'list_items' 'lost' %}" class="btn btn-sm btn-outline-danger">View Lost</a>
-        <a href="{% url 'list_items' 'found' %}" class="btn btn-sm btn-outline-success">View Found</a>
+        <a href="{% url 'list_items' 'lost' %}" class="btn btn-sm gradient-btn me-2">View Lost</a>
+        <a href="{% url 'list_items' 'found' %}" class="btn btn-sm gradient-btn">View Found</a>
     </div>
 </h3>
 
 <div class="row g-4">
     {% for item in recent_items %}
     <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card h-100 shadow-sm">
+        <div class="glass-card h-100">
 
             <!-- 🔥 FIX START -->
             <div class="item-img-container position-relative">
@@ -115,7 +115,7 @@
                     </span>
 
                 {% else %}
-                <div class="bg-light d-flex align-items-center justify-content-center" style="height:200px;">
+                <div class="bg-transparent d-flex align-items-center justify-content-center" style="height:200px;">
                     No Image
                 </div>
                 {% endif %}
@@ -124,13 +124,13 @@
             <!-- 🔥 FIX END -->
 
             <div class="card-body">
-                <h5>{{ item.title }}</h5>
-                <p class="text-muted mb-1"><small>{{ item.location }}</small></p>
-                <p class="text-muted"><small>{{ item.date }}</small></p>
+                <h5 style="color: #fff; font-weight: 600;">{{ item.title }}</h5>
+                <p class="text-muted mb-1"><small><i class="fa-solid fa-location-dot me-1"></i>{{ item.location }}</small></p>
+                <p class="text-muted"><small><i class="fa-regular fa-clock me-1"></i>{{ item.date }}</small></p>
             </div>
 
-            <div class="card-footer bg-white border-0">
-                <a href="{% url 'item_detail' item.id %}" class="btn btn-outline-primary w-100">
+            <div class="card-footer border-0 p-3 pt-0">
+                <a href="{% url 'item_detail' item.id %}" class="btn gradient-btn w-100">
                     View Details
                 </a>
             </div>
@@ -143,28 +143,31 @@
 <hr>
 
 <!-- HOW IT WORKS -->
-<div class="mt-5 pt-5">
-    <h2 class="text-center fw-bold mb-5">How It's Works</h2>
+<div class="mt-5 pt-5 mb-5">
+    <h2 class="text-center fw-bold mb-5 neon-text" style="color: #fff;">How It Works</h2>
 
     <div class="d-flex justify-content-center align-items-center flex-wrap gap-4 text-center">
 
-        <div class="step-box p-4 shadow-sm">
-            <h5 class="fw-bold">STEP 1</h5>
-            <p>Report your lost or found item</p>
+        <div class="step-box p-4">
+            <div class="mb-3 text-primary" style="font-size: 2rem;"><i class="fa-solid fa-bullhorn"></i></div>
+            <h5 class="fw-bold mb-2">STEP 1</h5>
+            <p class="text-muted mb-0">Report your lost or found item</p>
         </div>
 
-        <div class="arrow-circle">→</div>
+        <div class="arrow-circle"><i class="fa-solid fa-arrow-right"></i></div>
 
-        <div class="step-box p-4 shadow-sm">
-            <h5 class="fw-bold">STEP 2</h5>
-            <p>Users find matching items</p>
+        <div class="step-box p-4">
+            <div class="mb-3 text-success" style="font-size: 2rem;"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <h5 class="fw-bold mb-2">STEP 2</h5>
+            <p class="text-muted mb-0">Users find matching items</p>
         </div>
 
-        <div class="arrow-circle">→</div>
+        <div class="arrow-circle"><i class="fa-solid fa-arrow-right"></i></div>
 
-        <div class="step-box p-4 shadow-sm">
-            <h5 class="fw-bold">STEP 3</h5>
-            <p>Contact & return safely</p>
+        <div class="step-box p-4">
+            <div class="mb-3 text-warning" style="font-size: 2rem;"><i class="fa-solid fa-handshake"></i></div>
+            <h5 class="fw-bold mb-2">STEP 3</h5>
+            <p class="text-muted mb-0">Contact & return safely</p>
         </div>
 
     </div>

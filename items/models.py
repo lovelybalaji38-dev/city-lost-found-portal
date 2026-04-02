@@ -23,14 +23,16 @@ class Item(models.Model):
     
 
 class Claim(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE,related_name='claims')
     claimant = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     status = models.CharField(max_length=10, choices=[
         ('pending', 'Pending'),
         ('approved', 'Approved'),
-        ('rejected', 'Rejected')
+        ('rejected', 'Rejected'),
     ], default='pending')
+
+    is_cleared = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

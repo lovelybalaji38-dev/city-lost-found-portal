@@ -56,10 +56,11 @@ def dashboard(request):
     # Existing logic
     if request.user.is_superuser:
         user_items = Item.objects.all()
-        claims = Claim.objects.all()
+        claims = Claim.objects.filter(is_cleared=False)
     else:
         user_items = Item.objects.filter(user=request.user)
-        claims = Claim.objects.filter(item__user=request.user)
+        claims = Claim.objects.filter(item__user=request.user,
+        is_cleared=False )
 
     # 🔥 ADD THIS (Admin stats)
     total_users = User.objects.count()
@@ -117,18 +118,27 @@ def list_items(request, item_status):
             Q(title__icontains=query) | Q(location__icontains=query)
         )
 
+    # 🔥 ADD THIS BLOCK
+    if request.user.is_authenticated:
+        for item in items:
+            item.is_approved = Claim.objects.filter(
+                item=item,
+                claimant=request.user,
+                status='approved'
+            ).exists()
+    else:
+        for item in items:
+            item.is_approved = False
+
     template_name = 'lost_items.html' if item_status == 'lost' else 'found_items.html'
 
     return render(request, template_name, {
-    'items': items,
-    'query': query,
-    'item_status': item_status
-})
+        'items': items,
+        'query': query,
+        'item_status': item_status
+    })
 
 
-def item_detail(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    return render(request, 'item_detail.html', {'item': item})
 
 
 @login_required
@@ -220,32 +230,32 @@ def item_detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
 
     approved = False
-    has_claim = False   # 👈 ADD THIS
+    has_claim = False
 
     if request.user.is_authenticated:
 
-    # 🔥 already claim pannirukana check
-     has_claim = Claim.objects.filter(
-        item=item,
-        claimant=request.user
-    ).exists()
-
-    # 🔥 approved check
-    if request.user.is_superuser:
-        approved = True
-    else:
-        approved = Claim.objects.filter(
+        # 🔥 already claim pannirukana check
+        has_claim = Claim.objects.filter(
             item=item,
             claimant=request.user,
-            status='approved'
+            is_cleared=False
         ).exists()
+
+        # 🔥 approved check
+        if request.user.is_superuser:
+            approved = True
+        else:
+            approved = Claim.objects.filter(
+                item=item,
+                claimant=request.user,
+                status='approved'
+            ).exists()
 
     return render(request, 'item_detail.html', {
         'item': item,
         'approved': approved,
-        'has_claim': has_claim   
+        'has_claim': has_claim
     })
-
 
 
 
@@ -267,7 +277,8 @@ def chat_view(request, item_id):
     if request.method == "POST":
         msg = request.POST.get('message')
 
-        if msg:   # avoid empty message
+        # ✅ IMPORTANT FIX
+        if msg and msg.strip():
 
             # 🔄 sender / receiver logic
             if request.user == item.user or request.user.is_superuser:
@@ -275,7 +286,7 @@ def chat_view(request, item_id):
                 if claim:
                     receiver = claim.claimant
                 else:
-                    return redirect('home')   # safety
+                    return redirect('home')
             else:
                 receiver = item.user
 
@@ -286,11 +297,14 @@ def chat_view(request, item_id):
                 message=msg
             )
 
-    # 📜 GET MESSAGES
-    messages = Chat.objects.filter(item=item).order_by('timestamp')
+        # 🔁 AFTER POST → redirect (avoid duplicate)
+        return redirect('chat', item_id=item.id)
+
+    # 📜 GET MESSAGES (ONLY for GET request)
+    chat_messages = Chat.objects.filter(item=item).order_by('timestamp')
 
     return render(request, 'chat.html', {
-        'messages': messages,
+        'chat_messages': chat_messages,
         'item': item
     })
 
@@ -320,7 +334,8 @@ def delete_claim(request, claim_id):
 
     # only owner அல்லது admin மட்டும் delete பண்ணலாம்
     if request.user == claim.item.user or request.user.is_superuser:
-        claim.delete()
+        claim.is_cleared = True
+        claim.save()
 
     return redirect('dashboard')
 
@@ -335,11 +350,42 @@ def is_admin(user):
 
 @user_passes_test(is_admin)
 def users_overview(request):
+    
     users_data = User.objects.annotate(
-        total_posts=Count('items'),
-        lost_count=Count('items', filter=Q(items__status='lost')),
-        found_count=Count('items', filter=Q(items__status='found')),
-    )
+    total_posts=Count('items',distinct=True),
+
+    found_count=Count(
+    'items',
+    filter=Q(items__status='found'),
+    distinct=True
+),
+
+    lost_count=Count(
+    'items',
+    filter=Q(items__status='lost'),
+    distinct=True
+),
+
+
+    # ✅ ONLY EXISTING ITEMS CLAIMS
+    approved_claims = Count(
+    'items',
+    filter=Q(
+        items__status='found',
+        items__claims__status='approved'
+    ),
+    distinct=True
+),
+
+rejected_claims = Count(
+    'items',
+    filter=Q(
+        items__status='found',
+        items__claims__status='rejected'
+    ),
+    distinct=True
+)
+)
 
     total_users = User.objects.count()
 

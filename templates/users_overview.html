@@ -4,17 +4,20 @@
 
 <div class="container mt-4">
 
-    <h2 class="mb-3">Users Overview</h2>
+    <h2 class="mb-3 text-white">Users Overview</h2>
 
-    <p>Total Users: <strong>{{ total_users }}</strong></p>
+    <p class="text-white">Total Users: <strong>{{ total_users }}</strong></p>
 
-    <table class="table table-hover shadow-sm mt-3">
+    <div class="glass-card p-3 overflow-hidden">
+    <table class="table table-hover table-dark shadow-sm mt-3 mb-0 glass-table">
         <thead class="table-dark">
             <tr>
                 <th>Username</th>
                 <th>Total Posts</th>
                 <th>Lost</th>
                 <th>Found</th>
+                <th>Approved</th>
+                <th>Declines</th>
             </tr>
         </thead>
         <tbody>
@@ -24,10 +27,13 @@
                 <td><span class="badge bg-primary">{{ user.total_posts }}</span></td>
                 <td><span class="badge bg-danger">{{ user.lost_count }}</span></td>
                 <td><span class="badge bg-success">{{ user.found_count }}</span></td>
+                <td><span class="badge bg-success">{{ user.approved_claims }}</span></td>
+                <td><span class="badge bg-danger">{{ user.rejected_claims }}</span></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    </div>
 
 </div>
 <br>

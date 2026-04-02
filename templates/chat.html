@@ -14,7 +14,7 @@
         <!-- CHAT BODY -->
         <div class="card-body" style="height: 400px; overflow-y: auto;" id="chat-box">
 
-            {% for msg in messages %}
+            {% for msg in chat_messages %}
 
                 {% if msg.sender == user %}
                 <!-- YOU -->
@@ -26,7 +26,9 @@
                     </span>
 
                     <br>
-                    <small class="text-muted">{{ msg.timestamp|time:"H:i" }}</small>
+                    <small class="text-muted">
+                        {{ msg.timestamp|date:"h:i A" }}
+                    </small>
                 </div>
 
                 {% else %}
@@ -41,7 +43,9 @@
                     </span>
 
                     <br>
-                    <small class="text-muted">{{ msg.timestamp|time:"H:i" }}</small>
+                    <small class="text-muted">
+                        {{ msg.timestamp|date:"h:i A" }}
+                    </small>
                 </div>
                 {% endif %}
 
@@ -59,7 +63,7 @@
                     <input type="text" name="message" class="form-control"
                            placeholder="Type message..." required>
 
-                    <button class="btn btn-primary">
+                    <button class="btn gradient-btn">
                         Send
                     </button>
                 </div>

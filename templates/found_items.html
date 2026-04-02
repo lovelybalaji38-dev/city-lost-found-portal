@@ -8,7 +8,7 @@
         </h2>
     </div>
     <div class="col-auto">
-        <a href="{% url 'add_item' 'found' %}" class="btn btn-success">
+        <a href="{% url 'add_item' 'found' %}" class="btn gradient-btn">
             Add a Found Item
         </a>
     </div>
@@ -20,13 +20,13 @@
 
         <form method="GET" class="d-flex">
 
-            <div class="input-group shadow-sm">
+            <div class="input-group">
 
                 <input type="text" name="q" class="form-control" placeholder="Search by title or location..."
                     value="{{ query|default:'' }}">
 
-                <button class="btn btn-success">
-                    🔍
+                <button class="btn gradient-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
 
             </div>
@@ -45,57 +45,44 @@
     {% for item in items %}
 
     <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card h-100 position-relative border-success border-opacity-25 shadow-sm">
+        <div class="glass-card h-100 position-relative">
 
-            <!-- 🔥 FIX START -->
             <div class="item-img-container position-relative">
 
                 {% if item.image %}
 
-                    {% if user.is_authenticated %}
-
-                        {% if user == item.user or user.is_superuser %}
-                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid">
-
-                        {% elif item.id in approved_items %}
-                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid">
-
-                        {% else %}
-                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid blur-img">
-                        {% endif %}
-
+                    {% if user == item.user or user.is_superuser or item.is_approved %}
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid">
                     {% else %}
                         <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid blur-img">
                     {% endif %}
 
-                    <!-- 🔥 BADGE inside container -->
                     <span class="status-badge status-found">Found</span>
 
                 {% else %}
-                <div class="text-muted d-flex w-100 h-100 align-items-center justify-content-center bg-light">
+                <div class="text-muted d-flex w-100 h-100 align-items-center justify-content-center bg-transparent">
                     <span>No Image</span>
                 </div>
                 {% endif %}
 
             </div>
-            <!-- 🔥 FIX END -->
 
             <div class="card-body">
-                <h5 class="card-title text-success">{{ item.title }}</h5>
+                <h5 class="card-title text-success" style="font-weight: 600;">{{ item.title }}</h5>
 
                 <p class="card-text text-muted mb-1">
-                    <small><strong>Location:</strong> {{ item.location }}</small>
+                    <small><strong><i class="fa-solid fa-location-dot me-1"></i>Location:</strong> {{ item.location }}</small>
                 </p>
 
                 <p class="card-text text-muted mb-3">
-                    <small><strong>Date Found:</strong> {{ item.date }}</small>
+                    <small><strong><i class="fa-regular fa-clock me-1"></i>Date Found:</strong> {{ item.date }}</small>
                 </p>
 
                 <p class="card-text text-truncate">{{ item.description }}</p>
             </div>
 
-            <div class="card-footer bg-white border-top-0 pb-3">
-                <a href="{% url 'item_detail' item.id %}" class="btn btn-outline-success w-100">
+            <div class="card-footer border-0 pb-3 p-3 pt-0">
+                <a href="{% url 'item_detail' item.id %}" class="btn gradient-btn w-100">
                     View Details
                 </a>
             </div>

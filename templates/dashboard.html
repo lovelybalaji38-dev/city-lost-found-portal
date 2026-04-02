@@ -5,10 +5,10 @@
 <div class="pb-5 mb-5" style="min-height: 65vh;">
 
     <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-        <h2>My Dashboard</h2>
+        <h2 style="color: #fff;">My Dashboard</h2>
         <div>
-            <a href="{% url 'add_item' 'lost' %}" class="btn btn-outline-danger me-2">Report Lost Item</a>
-            <a href="{% url 'add_item' 'found' %}" class="btn btn-outline-success">Add Found Item</a>
+            <a href="{% url 'add_item' 'lost' %}" class="btn gradient-btn me-2">Report Lost Item</a>
+            <a href="{% url 'add_item' 'found' %}" class="btn gradient-btn">Add Found Item</a>
         </div>
     </div>
 
@@ -17,18 +17,18 @@
     <!-- ITEMS TABLE -->
     <div class="row">
         <div class="col-12">
-            <div class="card shadow-sm">
+            <div class="glass-card">
 
-                <div class="card-header bg-white">
-                    <h5 class="mb-0">My Reported Items</h5>
+                <div class="card-header border-bottom">
+                    <h5 class="mb-0 text-white">My Reported Items</h5>
                 </div>
 
                 <div class="card-body p-0">
                     <div class="table-responsive">
 
-                        <table class="table table-hover mb-0 align-middle">
+                        <table class="table table-hover table-dark mb-0 align-middle">
 
-                            <thead class="table-light">
+                            <thead class="table-dark text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">
                                 <tr>
                                     <th>Item</th>
                                     <th>Status</th>
@@ -49,8 +49,8 @@
                                             <img src="{{ item.image.url }}" class="rounded me-3"
                                                 style="width: 50px; height: 50px; object-fit: cover;">
                                             {% else %}
-                                            <div class="rounded me-3 bg-light d-flex justify-content-center align-items-center text-muted"
-                                                style="width: 50px; height: 50px;">
+                                            <div class="rounded me-3 d-flex justify-content-center align-items-center text-muted"
+                                                style="width: 50px; height: 50px; background: rgba(255,255,255,0.1);">
                                                 <small>No Img</small>
                                             </div>
                                             {% endif %}
@@ -71,10 +71,10 @@
 
                                     <td class="text-end">
                                         <a href="{% url 'item_detail' item.id %}"
-                                            class="btn btn-sm btn-info text-white">View</a>
-                                        <a href="{% url 'edit_item' item.id %}" class="btn btn-sm btn-primary">Edit</a>
+                                            class="btn btn-sm gradient-btn">View</a>
+                                        <a href="{% url 'edit_item' item.id %}" class="btn btn-sm gradient-btn">Edit</a>
                                         <a href="{% url 'delete_item' item.id %}"
-                                            class="btn btn-sm btn-danger">Delete</a>
+                                            class="btn btn-sm gradient-btn">Delete</a>
                                     </td>
 
                                 </tr>
@@ -113,8 +113,7 @@
 
             <!-- Total Users -->
             <div class="col-md-6 mb-3">
-                <div class="card shadow border-0 text-white"
-                    style="background: linear-gradient(135deg, #4e73df, #224abe); border-radius:15px;  transition:0.3s; ">
+                <div class="glass-card shadow border-0 text-white stats-card-1 p-3">
                     <div class="card-body">
                         <h6>Total Users</h6>
                         <h2>{{ total_users }}</h2>
@@ -125,8 +124,7 @@
             <!-- View Users -->
             <div class="col-md-6 mb-3">
                 <a href="{% url 'users_overview' %}" style="text-decoration:none;">
-                    <div class="card shadow border-0 text-white"
-                        style="background: linear-gradient(135deg, #1cc88a, #13855c); border-radius:15px; transition:0.3s; ">
+                    <div class="glass-card shadow border-0 text-white stats-card-2 p-3">
                         <div class="card-body">
                             <h6>View Users</h6>
                             <h2>→</h2>
@@ -149,14 +147,16 @@
     <h4>Claim Requests</h4>
 
     <div class="row">
-        {% for claim in claims %}
+      {% for claim in claims %}
+         
+        {% if claim.status != 'cleared' %}
 
         <div class="col-md-3 mb-4">
-            <div class="card p-3 shadow-sm h-100">
+            <div class="glass-card p-4 h-100">
 
-                <h6 class="fw-bold">{{ claim.item.title }}</h6>
+                <h6 class="fw-bold text-white">{{ claim.item.title }}</h6>
 
-                <p class="mb-1">
+                <p class="mb-1 text-muted">
                     <strong>User:</strong> {{ claim.claimant.username }}
                 </p>
 
@@ -188,24 +188,26 @@
                 </p>
 
                 {% if claim.status == 'pending' %}
-                <a href="{% url 'approve_claim' claim.id %}" class="btn btn-success btn-sm w-100 mb-2"
+                <a href="{% url 'approve_claim' claim.id %}" class="btn gradient-btn btn-sm w-100 mb-2"
                     onclick="return confirm('Are you sure Approve This Item ?')">
                     Approve
                 </a>
 
-                <a href="{% url 'decline_claim' claim.id %}" class="btn btn-danger btn-sm w-100"
+                <a href="{% url 'decline_claim' claim.id %}" class="btn gradient-btn btn-sm w-100"
                     onclick="return confirm('Are you sure Decline This Item ?')">
                     Decline
                 </a>
                 {% endif %}
 
-                <a href="{% url 'delete_claim' claim.id %}" class="btn btn-sm btn-danger mt-2"
+                <a href="{% url 'delete_claim' claim.id %}" class="btn btn-sm gradient-btn mt-2"
                     onclick="return confirm('Delete this request?')">
                     ❌ Clear
                 </a>
 
             </div>
         </div>
+
+        {% endif %}
 
         {% empty %}
         <p class="text-muted">No claim requests yet.</p>
