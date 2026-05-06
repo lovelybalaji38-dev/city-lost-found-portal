@@ -4,9 +4,9 @@
 
 <div class="pb-5 mb-5" style="min-height: 65vh;">
 
-    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-        <h2 style="color: #fff;">My Dashboard</h2>
-        <div>
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3 dashboard-top-header">
+        <h2 style="color: #fff;" class="dashboard-title">My Dashboard</h2>
+        <div class="dashboard-top-actions">
             <a href="{% url 'add_item' 'lost' %}" class="btn gradient-btn me-2">Report Lost Item</a>
             <a href="{% url 'add_item' 'found' %}" class="btn gradient-btn">Add Found Item</a>
         </div>
@@ -69,12 +69,14 @@
                                     <td>{{ item.date }}</td>
                                     <td>{{ item.location }}</td>
 
-                                    <td class="text-end">
-                                        <a href="{% url 'item_detail' item.id %}"
-                                            class="btn btn-sm gradient-btn">View</a>
-                                        <a href="{% url 'edit_item' item.id %}" class="btn btn-sm gradient-btn">Edit</a>
-                                        <a href="{% url 'delete_item' item.id %}"
-                                            class="btn btn-sm gradient-btn">Delete</a>
+                                    <td class="text-end action-btn-cell">
+                                        <div class="action-btn-wrapper">
+                                            <a href="{% url 'item_detail' item.id %}"
+                                                class="btn btn-sm gradient-btn">View</a>
+                                            <a href="{% url 'edit_item' item.id %}" class="btn btn-sm gradient-btn">Edit</a>
+                                            <a href="{% url 'delete_item' item.id %}"
+                                                class="btn btn-sm gradient-btn">Delete</a>
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -109,7 +111,7 @@
 
     <div class="d-flex justify-content-center mt-4 mb-4">
 
-        <div class="row text-center" style="width: 50%;">
+        <div class="row text-center admin-stats-row" style="width: 50%;">
 
             <!-- Total Users -->
             <div class="col-md-6 mb-3">
@@ -199,7 +201,7 @@
                 </a>
                 {% endif %}
 
-                <a href="{% url 'delete_claim' claim.id %}" class="btn btn-sm gradient-btn mt-2"
+                <a href="{% url 'delete_claim' claim.id %}" class="btn btn-sm gradient-btn mt-2 claim-action-btn"
                     onclick="return confirm('Delete this request?')">
                     ❌ Clear
                 </a>
