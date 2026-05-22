@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -18,12 +18,21 @@
 
     <!-- Custom CSS -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Inline Script to prevent theme flickering (white flash) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem("theme");
+            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            document.documentElement.setAttribute("data-bs-theme", savedTheme || systemTheme);
+        })();
+    </script>
 </head>
 
 <body class="d-flex flex-column min-vh-100 {% block body_class %}{% endblock %} fade-in">
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark glass-nav sticky-top">
+    <nav class="navbar navbar-expand-lg glass-nav sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{% url 'home' %}">City Lost&Found</a>
 
@@ -57,7 +66,14 @@
                     </li>
                 </ul>
 
-                <ul class="navbar-nav">
+                <ul class="navbar-nav align-items-center">
+                    <!-- Theme Toggle Switcher -->
+                    <li class="nav-item me-2">
+                        <button onclick="toggleTheme()" class="theme-toggle-btn" type="button" aria-label="Toggle theme">
+                            <i id="themeIcon" class="fa-solid fa-moon"></i>
+                        </button>
+                    </li>
+
                     {% if user.is_authenticated %}
 
                     <li class="nav-item">
@@ -65,27 +81,20 @@
                     </li>
 
                     <li class="nav-item">
-                        <span class="nav-link text-light">
+                        <span class="nav-link text-secondary fw-semibold">
                             Hello,
                             {% if user.first_name %}
-                            {{ user.first_name }} {{ user.last_name }}
+                            {{ user.first_name }}
                             {% else %}
                             {{ user.username }}
                             {% endif %}
                         </span>
                     </li>
 
-                    <!-- <li class="nav-item d-flex align-items-center">
-                        <button onclick="toggleDark()" class="btn btn-sm btn-light ms-2">
-                            🌙
-                        </button>
-
-                    </li> -->
-
                     <li class="nav-item">
                         <form action="{% url 'logout' %}" method="post" class="d-inline">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-light ms-2">Logout</button>
+                            <button type="submit" class="btn btn-outline-danger btn-sm ms-2">Logout</button>
                         </form>
                     </li>
 
@@ -96,7 +105,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="btn btn-light fw-bold px-3 ms-2 register-btn" href="{% url 'register' %}">Register</a>
+                        <a class="btn gradient-btn btn-sm fw-bold px-3 ms-2 register-btn" href="{% url 'register' %}">Register</a>
                     </li>
 
                     {% endif %}
@@ -126,14 +135,14 @@
 
 
     <!-- FOOTER START -->
-    <footer class="text-light pt-5 pb-3 mt-5 glass-nav">
+    <footer class="pt-5 pb-3 mt-5 glass-nav text-secondary">
         <div class="container">
 
             <div class="row">
 
                 <!-- ABOUT -->
                 <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold">City Lost & Found</h5>
+                    <h5 class="fw-bold text-primary">City Lost & Found</h5>
                     <p class="small">
                         Helping people find their lost belongings and return found items easily.
                     </p>
@@ -143,12 +152,10 @@
                 <div class="col-md-4 mb-4">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'home' %}" class="text-light text-decoration-none">Home</a></li>
-                        <li><a href="{% url 'list_items' 'lost' %}" class="text-light text-decoration-none">Lost
-                                Items</a></li>
-                        <li><a href="{% url 'list_items' 'found' %}" class="text-light text-decoration-none">Found
-                                Items</a></li>
-                        <li><a href="{% url 'dashboard' %}" class="text-light text-decoration-none">Dashboard</a></li>
+                        <li class="mb-1"><a href="{% url 'home' %}" class="text-secondary text-decoration-none">Home</a></li>
+                        <li class="mb-1"><a href="{% url 'list_items' 'lost' %}" class="text-secondary text-decoration-none">Lost Items</a></li>
+                        <li class="mb-1"><a href="{% url 'list_items' 'found' %}" class="text-secondary text-decoration-none">Found Items</a></li>
+                        <li class="mb-1"><a href="{% url 'dashboard' %}" class="text-secondary text-decoration-none">Dashboard</a></li>
                     </ul>
                 </div>
 
@@ -160,17 +167,17 @@
                     <p class="mb-2">📍 Coimbatore, India</p>
 
                     <!-- SOCIAL -->
-                    <div>
-                        <a href="#" class="text-light me-3 fs-5"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-light me-3 fs-5"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-light me-3 fs-5"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="text-light fs-5"><i class="bi bi-twitter"></i></a>
+                    <div class="mt-2">
+                        <a href="#" class="text-secondary me-3 fs-5"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-secondary me-3 fs-5"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-secondary me-3 fs-5"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="text-secondary fs-5"><i class="bi bi-twitter"></i></a>
                     </div>
                 </div>
 
             </div>
 
-            <hr class="border-light">
+            <hr class="border-secondary opacity-25">
 
             <!-- COPYRIGHT -->
             <div class="text-center small">

@@ -1,39 +1,43 @@
-// DARK MODE
+// Theme Toggler for Light / Dark Mode
 
-
-// function toggleDark() {
-//     document.body.classList.toggle("dark-mode");
-
+function toggleTheme() {
+    const htmlElement = document.documentElement;
+    const currentTheme = htmlElement.getAttribute("data-bs-theme") || "light";
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
     
-//     if (document.body.classList.contains("dark-mode")) {
-//         localStorage.setItem("dark", "true");
-//     } else {
-//         localStorage.setItem("dark", "false");
-//     }
-// }
+    htmlElement.setAttribute("data-bs-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    
+    updateThemeIcon(newTheme);
+}
 
+function updateThemeIcon(theme) {
+    const icon = document.getElementById("themeIcon");
+    if (icon) {
+        if (theme === "dark") {
+            icon.className = "fa-solid fa-sun";
+            icon.style.color = "#ffb300"; // Warm yellow for sun
+        } else {
+            icon.className = "fa-solid fa-moon";
+            icon.style.color = "#4f46e5"; // Cool indigo for moon
+        }
+    }
+}
 
-// window.onload = function () {
-//     if (localStorage.getItem("dark") === "true") {
-//         document.body.classList.add("dark-mode");
-//     }
-// };
+// Apply theme as early as possible
+(function () {
 
+    const savedTheme = localStorage.getItem("theme");
 
+    // Default theme = dark
+    const themeToApply = savedTheme || "dark";
 
+    document.documentElement.setAttribute("data-bs-theme", themeToApply);
 
+})();
 
-// function togglePassword() {
-//     const password = document.getElementById("password");
-//     const icon = document.getElementById("togglePassword");
-
-//     if (password.type === "password") {
-//         password.type = "text";
-//         icon.classList.remove("fa-eye");
-//         icon.classList.add("fa-eye-slash");
-//     } else {
-//         password.type = "password";
-//         icon.classList.remove("fa-eye-slash");
-//         icon.classList.add("fa-eye");
-//     }
-// }
+// Once DOM is fully loaded, update the theme toggle icon
+document.addEventListener("DOMContentLoaded", () => {
+    const activeTheme = document.documentElement.getAttribute("data-bs-theme") || "light";
+    updateThemeIcon(activeTheme);
+});

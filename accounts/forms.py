@@ -29,3 +29,23 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("This username already exists")
+        return username
+
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        if password and len(password) < 8:
+            raise forms.ValidationError("Password must contain minimum 8 characters")
+        return password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', "Passwords do not match")
+        return cleaned_data

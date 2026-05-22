@@ -13,18 +13,16 @@ def register_view(request):
         return redirect('home')
         
     if request.method == 'POST':
+        if not request.POST.get('agree'):
+            messages.error(request, "Please accept Terms & Conditions")
+            return redirect('register')
 
-     if not request.POST.get('agree'):
-        messages.error(request, "Please accept Terms & Conditions")
-        return redirect('register')
-
-    form = UserRegistrationForm(request.POST)
-
-    if form.is_valid():
-        user = form.save()
-        login(request, user)
-        messages.success(request, f"Account created successfully for {user.username}!")
-        return redirect('home')
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f"Account created successfully for {user.username}!")
+            return redirect('home')
     else:
         form = UserRegistrationForm()
     

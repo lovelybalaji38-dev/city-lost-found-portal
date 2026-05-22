@@ -1,20 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
 
 <div class="row pt-4">
     <div class="col-md-8 offset-md-2">
 
-        <div class="card shadow">
+        <div class="glass-card shadow-sm">
 
             <!-- HEADER -->
-            <div class="card-header 
-                {% if item.status == 'lost' %}bg-danger{% else %}bg-success{% endif %} 
-                text-white d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex justify-content-between align-items-center">
 
-                <h4 class="mb-0">{{ item.status|title }} Item Details</h4>
+                <h4 class="mb-0">
+                    <span class="badge {% if item.status == 'lost' %}bg-danger{% else %}bg-success{% endif %} text-uppercase me-2" style="font-size: 0.85rem;">
+                        {{ item.status }}
+                    </span>
+                    Item Details
+                </h4>
 
-                <a href="{% url 'list_items' item.status %}" class="btn btn-sm btn-light fw-bold">
+                <a href="{% url 'list_items' item.status %}" class="btn btn-sm btn-outline-secondary fw-bold">
                     Back
                 </a>
             </div>

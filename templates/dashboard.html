@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
 
 <div class="pb-5 mb-5" style="min-height: 65vh;">
 
     <div class="d-flex justify-content-between align-items-center mb-4 mt-3 dashboard-top-header">
-        <h2 style="color: #fff;" class="dashboard-title">My Dashboard</h2>
+        <h2 class="dashboard-title">My Dashboard</h2>
         <div class="dashboard-top-actions">
             <a href="{% url 'add_item' 'lost' %}" class="btn gradient-btn me-2">Report Lost Item</a>
             <a href="{% url 'add_item' 'found' %}" class="btn gradient-btn">Add Found Item</a>
@@ -20,15 +20,15 @@
             <div class="glass-card">
 
                 <div class="card-header border-bottom">
-                    <h5 class="mb-0 text-white">My Reported Items</h5>
+                    <h5 class="mb-0">My Reported Items</h5>
                 </div>
 
                 <div class="card-body p-0">
                     <div class="table-responsive">
 
-                        <table class="table table-hover table-dark mb-0 align-middle">
+                        <table class="table table-hover mb-0 align-middle">
 
-                            <thead class="table-dark text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">
+                            <thead class="text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">
                                 <tr>
                                     <th>Item</th>
                                     <th>Status</th>
@@ -115,7 +115,7 @@
 
             <!-- Total Users -->
             <div class="col-md-6 mb-3">
-                <div class="glass-card shadow border-0 text-white stats-card-1 p-3">
+                <div class="glass-card shadow border-0 stats-card-1 p-3">
                     <div class="card-body">
                         <h6>Total Users</h6>
                         <h2>{{ total_users }}</h2>
@@ -126,7 +126,7 @@
             <!-- View Users -->
             <div class="col-md-6 mb-3">
                 <a href="{% url 'users_overview' %}" style="text-decoration:none;">
-                    <div class="glass-card shadow border-0 text-white stats-card-2 p-3">
+                    <div class="glass-card shadow border-0 stats-card-2 p-3">
                         <div class="card-body">
                             <h6>View Users</h6>
                             <h2>→</h2>
@@ -156,7 +156,7 @@
         <div class="col-md-3 mb-4">
             <div class="glass-card p-4 h-100">
 
-                <h6 class="fw-bold text-white">{{ claim.item.title }}</h6>
+                <h6 class="fw-bold">{{ claim.item.title }}</h6>
 
                 <p class="mb-1 text-muted">
                     <strong>User:</strong> {{ claim.claimant.username }}

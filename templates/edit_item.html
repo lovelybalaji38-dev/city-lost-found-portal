@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
 <div class="container py-5">
@@ -6,11 +6,11 @@
     <div class="row justify-content-center">
         <div class="col-lg-7 col-md-9">
 
-            <div class="card shadow-lg border-0">
+            <div class="glass-card shadow-lg">
 
-                <div class="card-header bg-primary text-white text-center">
+                <div class="card-header text-center">
                     <h4 class="mb-0">Edit Item</h4>
-                    <small>{{ item.title }}</small>
+                    <small class="text-muted">{{ item.title }}</small>
                 </div>
 
                 <div class="card-body p-4">

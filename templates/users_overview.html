@@ -1,17 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block content %}
 
 <div class="container mt-4">
 
-    <h2 class="mb-3 text-white">Users Overview</h2>
+    <h2 class="mb-3">Users Overview</h2>
 
-    <p class="text-white">Total Users: <strong>{{ total_users }}</strong></p>
+    <p class="text-secondary">Total Users: <strong>{{ total_users }}</strong></p>
 
     <div class="glass-card p-3 overflow-hidden">
     <div class="table-responsive-mobile">
-    <table class="table table-hover table-dark shadow-sm mt-3 mb-0 glass-table">
-        <thead class="table-dark">
+    <table class="table table-hover shadow-sm mt-3 mb-0 glass-table">
+        <thead>
             <tr>
                 <th>Username</th>
                 <th>Total Posts</th>
